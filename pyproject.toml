@@ -1,0 +1,50 @@
+[project]
+name = "ai-review-summary"
+version = "0.1.0"
+description = "旅遊商品 AI 評論摘要：固定維度萃取 JSON、聚合統計、分項摘要與獨立 QC 的 LangGraph 管線"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langchain-anthropic>=1.0.0",
+    "langgraph>=1.0.0",
+    "pydantic>=2.0",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+review-summary = "ai_review_summary.demo:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15,<2.0",
+    "pytest>=8.0,<10.0",
+    "ruff>=0.11,<1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_review_summary"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = ["RUF001", "RUF002", "RUF003"]
+select = ["B", "E", "F", "I", "RUF", "SIM", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/ai_review_summary/prompts.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "tests"]
+plugins = ["pydantic.mypy"]
